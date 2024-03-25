@@ -17,7 +17,9 @@ export default function useSemaphore(): SemaphoreContextType {
             address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS
         })
 
-        const members = await semaphore.getGroupMembers(process.env.NEXT_PUBLIC_GROUP_ID as string)
+        const group = await semaphore.getGroupIds()
+        console.log(group);
+        const members = await semaphore.getGroupMembers(group[0] as string)
 
         setUsers(members.map((member) => member.toString()))
     }, [])
@@ -34,7 +36,9 @@ export default function useSemaphore(): SemaphoreContextType {
             address: process.env.NEXT_PUBLIC_SEMAPHORE_CONTRACT_ADDRESS
         })
 
-        const proofs = await semaphore.getGroupValidatedProofs(process.env.NEXT_PUBLIC_GROUP_ID as string)
+        const group = await semaphore.getGroupIds()
+        console.log(group);
+        const proofs = await semaphore.getGroupValidatedProofs(group[0] as string)
 
         setFeedback(proofs.map(({ message }: any) => decodeBytes32String(toBeHex(message, 32))))
     }, [])
